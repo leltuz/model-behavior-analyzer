@@ -1,0 +1,126 @@
+# Model Behavior Stability & Consistency Analyzer Configuration
+
+# Dataset Configuration
+dataset:
+  # Path to input dataset file (JSON format with 'id' and 'text' fields)
+  # If null, will generate synthetic dataset
+  input_path: null
+  # Number of synthetic samples to generate if input_path is null
+  num_samples: 20
+  # Seed for dataset generation
+  seed: 42
+
+# Perturbation Configuration
+perturbations:
+  # Number of perturbations to generate per input
+  num_per_input: 5
+  
+  # Invariance class definitions
+  # EXPECTED_INVARIANT: Perturbations that should not change model behavior
+  # STRESS_TEST: Perturbations that test robustness boundaries
+  invariance_classes:
+    EXPECTED_INVARIANT:
+      - stopword_removal
+      - punctuation_casing
+      - synonym_substitution
+    STRESS_TEST:
+      - character_noise
+  
+  # Perturbation types and their frequencies
+  types:
+    # Remove stopwords (common words like 'the', 'a', 'is')
+    stopword_removal:
+      enabled: true
+      frequency: 0.3  # 30% of perturbations
+    
+    # Substitute synonyms using a fixed dictionary
+    synonym_substitution:
+      enabled: true
+      frequency: 0.3
+      max_substitutions: 2  # Maximum number of words to substitute
+    
+    # Change punctuation and casing
+    punctuation_casing:
+      enabled: true
+      frequency: 0.2
+      operations: ["lowercase", "uppercase", "remove_punctuation"]
+    
+    # Add character-level noise
+    character_noise:
+      enabled: true
+      frequency: 0.2
+      noise_rate: 0.05  # 5% of characters
+
+# Inference Configuration
+inference:
+  # Model identifier (e.g., 'distilbert-base-uncased-finetuned-sst-2-english' for sentiment)
+  model_name: "distilbert-base-uncased-finetuned-sst-2-english"
+  
+  # Number of repeated runs per input (for consistency measurement)
+  num_runs: 3
+  
+  # Random seed for deterministic inference
+  seed: 42
+  
+  # Batch size for inference
+  batch_size: 8
+  
+  # Device (cpu or cuda)
+  device: "cpu"
+
+# Analysis Configuration
+analysis:
+  # Confidence threshold for binary decisions
+  confidence_threshold: 0.5
+  
+  # Instability regime thresholds
+  # Inputs are classified as STABLE, SENSITIVE, or BRITTLE based on these thresholds
+  instability_regimes:
+    # STABLE: decision_consistency >= stable_threshold AND flip_rate <= stable_flip_threshold
+    stable_threshold: 0.95  # 95% consistency required
+    stable_flip_threshold: 0.05  # <= 5% flip rate
+    
+    # SENSITIVE: Between stable and brittle thresholds
+    # BRITTLE: decision_consistency < brittle_threshold OR flip_rate >= brittle_flip_threshold
+    brittle_threshold: 0.80  # < 80% consistency
+    brittle_flip_threshold: 0.20  # >= 20% flip rate
+    
+    # Worst-case deviation thresholds
+    stable_deviation_threshold: 0.10  # <= 10% max deviation
+    brittle_deviation_threshold: 0.30  # >= 30% max deviation
+  
+  # Metrics to compute
+  metrics:
+    - decision_consistency
+    - flip_rate
+    - confidence_variance
+    - worst_case_deviation
+    - stability_profile
+    - instability_regime
+    - invariance_class_analysis
+    - run_variance_analysis
+  
+  # Cross-input pattern analysis
+  pattern_analysis:
+    enabled: true
+    # Group inputs by characteristics for pattern identification
+    grouping_dimensions:
+      - input_length
+      - confidence_range
+      - perturbation_class
+      - instability_regime
+
+# Output Configuration
+output:
+  # Directory for output files
+  output_dir: "outputs"
+  
+  # Behavior trace JSON filename
+  trace_file: "behavior_trace.json"
+  
+  # Summary report JSON filename
+  summary_file: "stability_summary.json"
+  
+  # Human-readable log filename
+  log_file: "evaluation.log"
+
