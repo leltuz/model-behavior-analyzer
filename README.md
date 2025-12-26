@@ -254,3 +254,8 @@ The system measures whether behavior changes in ways that violate explicit, reas
 This normative structure, combined with experimental controls (determinism) and model-agnostic design, positions the system as a research-grade measurement instrument for analyzing behavioral reliability and invariance in AI systems.
 
 **Note**: This analyzer measures behavior, not performance. It identifies brittleness and instability, enabling comparative analysis of model behavioral characteristics. The measurements are interpretative and require careful consideration of what they do and do not establish.
+
+## License
+
+This project is released under the MIT License. See the LICENSE file for details.
+Provided for research, educational, and demonstration purposes, without warranty of any kind.
