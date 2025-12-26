@@ -24,15 +24,11 @@ This README is written as a behavioral evaluation methodology, not a model bench
 
 - **For practical execution:** Sections on _Configuration_, _Installation_, and _Usage_ are secondary and included to support reproducible evaluation rather than to position the system as a deployable tool.
 
----
-
 ## Research Question
 
 **This system is designed to measure whether a model's behavior changes in ways that violate explicit, reasonable invariance expectations under controlled input variation, rather than whether those changes are correct or whether the perturbations capture real-world distribution shift.**
 
 This question anchors all components of the system: invariance classes, instability regimes, pattern analysis, and deterministic replay. The system operates at the input–output behavior level, making no assumptions about model architecture, training method, or modality. Any classifier with confidence outputs can be evaluated using this instrument.
-
----
 
 ## Conceptual Framework
 
@@ -57,8 +53,6 @@ It operates purely at the **input–output behavior level**. Any classifier that
 - Confidence scores
 
 can be evaluated using this instrument. The system measures behavioral characteristics, not architectural properties.
-
----
 
 ## System Architecture
 
@@ -114,7 +108,6 @@ Computes behavioral metrics:
 
 Aggregates metrics globally and performs cross-input behavioral pattern analysis.
 
----
 
 ## Observability & Tracing
 
@@ -129,7 +122,6 @@ Output files:
 
 All outputs are machine-readable JSON suitable for downstream analysis.
 
----
 
 ## Evaluation Methodology
 
@@ -141,7 +133,6 @@ The system is designed for **offline, deterministic evaluation**:
 
 Evaluation is **offline only**—no online learning, A/B testing, or production serving.
 
----
 
 ## Configuration
 
@@ -154,7 +145,6 @@ All parameters are configurable via `config.yaml`:
 
 No hard-coded constants in logic—everything is configurable.
 
----
 
 ## Installation
 
@@ -173,7 +163,6 @@ pip install transformers torch
 
 **For real evaluation**: Install `transformers` and `torch` to use actual model inference. Mock inference results should not be used to draw conclusions about model stability.
 
----
 
 ## Usage
 
@@ -187,7 +176,6 @@ python main.py --config custom_config.yaml
 
 The pipeline executes all four stages sequentially and exports results to the output directory specified in the config.
 
----
 
 ## What This Does NOT Prove
 
@@ -214,8 +202,6 @@ This system measures behavioral stability under controlled perturbations. It is 
 
 **Epistemic Position**: This is a measurement instrument, not a validation tool. The measurements provide signals about behavioral characteristics, but do not establish guarantees about correctness, fairness, or safety. Interpretation of results requires domain expertise and consideration of the limitations above.
 
----
-
 ## Out of Scope
 
 This system explicitly **does not**:
@@ -230,7 +216,6 @@ This system explicitly **does not**:
 
 This is an **evaluation instrument**, not a product. The focus is on measurement, not optimization.
 
----
 
 ## Design Principles
 
@@ -241,7 +226,6 @@ This is an **evaluation instrument**, not a product. The focus is on measurement
 5. **Modular**: Perturbations, inference, and analysis are separable
 6. **Model-Agnostic**: Operates at input–output behavior level, no architectural assumptions
 
----
 
 ## Framing
 
